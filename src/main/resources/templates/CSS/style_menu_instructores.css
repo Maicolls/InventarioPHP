@@ -1,0 +1,56 @@
+header{
+    background-color: rgb(57, 169, 0);
+}
+.dropdown-item{
+    font-size: 15px;
+}
+h1{
+    font-size: 150%;
+}
+.modal-body{
+    height:500px;
+    width: 100%;
+}
+#infor{
+    font-size: x-large;
+    width: 70%;
+    height: 150%;
+    -webkit-box-shadow: 0px 0px 13px 1px rgba(0,0,0,0.53);
+-moz-box-shadow: 0px 0px 13px 1px rgba(0,0,0,0.53);
+box-shadow: 0px 0px 13px 1px rgba(0,0,0,0.53);
+}
+#icon-btn{
+    font-size: 300%;
+}
+.row, div{
+    text-align: center; 
+}
+#solicitudmate, #solicitudmante, a{
+    width: 80%;
+    height: 140%;
+}
+#sumitem{
+    margin-bottom: 20px;
+}
+#val_inicial, #contador{
+    width: 60px;
+}
+#progra{
+    margin-bottom: 20px;
+}
+#btn_principales{
+    margin-top: 13%;
+    place-content: center;
+}
+/*.select2-selection__rendered {
+    line-height: 31px !important;
+}
+.select2-container .select2-selection--single {
+    height: 35px !important;
+}
+.select2-selection__arrow {
+    height: 34px !important;
+}*/
+.container{
+    Font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;    
+}

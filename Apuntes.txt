@@ -1,0 +1,43 @@
+la ruta para poder iniciar en un servidor local debe ser la siguiente 
+http://localhost/almacen2024-SOFIA/src/main/resources/templates/index.PHP
+____________________________________________________________________________
+
+Arreglos que se deben realizar en el codigo 
+*La Vista de ActualizarUsuairo:
+linea de codigo 12, la consulta sql esta tomado una tabla de usuarios la cual ha sido eliminada,
+parece que esta sentencia no esta haciendo funcionalidad en el codigo debido a que no esta almacenando nada en la
+base de datos.
+
+*La Vista de EliminarUsuario
+Se presenta el mismo error que el anterior se hace un llamado a la trabla de usuarios donde esta no se esa utilizada 
+de igual manera se realiza una consulta la cual no esta almacenando los datos que se encuentran en la consulta
+
+*La vista de RegistrarUsuario 
+presenta la misma consulta con la tabla de usuario
+
+
+Se ha revisado el perfil de los siguiente usuarios
+Admin
+Coordinador 
+Almacenista 
+
+Personal:
+Solicitud de Materiales:
+al enviar un solicitud periodica este da un error 
+Formulario solicitud de elementos anual genera una descarga de archivo tipo excel 
+Solicitud de Mantenimiento:
+Este de igual manera genera un descarga de un archivo excel 
+____________________________________________________________________________
+la vista de solicitud_periodica.php
+solo requiere que se muestre el alert de envio de solicitud al correo institucional
+____________________________________________________________________________
+
+PHP/RegistrarSolicitudAnual.php
+
+la funcionalidad que se muestra en el video del proyecto se evidencia la funcionalidad estable de lo que 
+esta vista del proyecto, al momento de implementar la nuevamente no se genera el registro si no que se hace una 
+descarga de un archivo excel 
+
+Se debe mirar las consultas sql que hay dentro del codigo, ya que hya unas que no sirven como la table de usuario.
+se debe realizar el diagrama  de flujo para el diseño de la interfaz faltante para las vistas de personal. 
+mirar si se intervine la base de datos 

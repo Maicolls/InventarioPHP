@@ -1,0 +1,33 @@
+
+header{
+    background-color:  rgb(57, 169, 0);
+}
+.dropdown-item{
+    font-size: 15px;
+}
+#info{
+    padding: 5%;
+}
+#infor{
+    font-family: sans-serif;
+    font-size: x-large;
+    width: 70%;
+    height: 150%;
+}
+#icon-btn{
+    font-size: 300%;
+}
+#solicitudmate{
+    margin-top: 20px;
+    width: 60%;
+}
+#solicitudmate{
+    margin-top: 20px;
+    width: 70%;
+}
+#sumitem{
+    margin-bottom: 20px;
+}
+.container{
+    Font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+}

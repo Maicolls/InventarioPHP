@@ -1,0 +1,22 @@
+header{
+    background-color:  rgb(57, 169, 0);
+}
+.dropdown-item{
+    font-size: 15px;
+}
+#info{
+    margin: 70px 350px;
+   
+}
+h3, #recam{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#tabla_inst{
+    position: relative;
+    align-items: center; 
+}
+.container{
+    Font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+}
