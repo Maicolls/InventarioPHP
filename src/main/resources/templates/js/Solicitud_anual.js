@@ -7,26 +7,60 @@ $(document).ready(function() {
         $("#nuevo_articulo").click(addNewRow);
         // Evento click para eliminar un artículo
         $("#eliminar_fila").click(deleteRow);
+        // Evento submit para enviar el formulario
+        $("#informeForm").submit(submitForm);
     }
+
+
+    
 
     // Función para ocultar el botón de eliminar fila
     function hideDeleteButton() {
         $("#eliminar_fila").hide();
     }
-
-    // Función para añadir una nueva fila a la tabla de artículos
     function addNewRow() {
         var newRowHtml = '<tr>' +
             '<td><select class="form-control" type="text" name="nom_elemento[]" ></td>' +
-            '<td><input class="form-control" type="text" name="unidadunidad[]"></td>' +
+            '<td><input class="form-control" type="text" name="unidad[]" ></td>' +
             '<td><input class="form-control" type="text" name="cantidad[]" ></td>' +
             '<td><input class="form-control" type="number" name="solicitada[]" ></td>' +
             '</tr>';
         $("#body_elemento").append(newRowHtml);
-        // Mostrar el botón de eliminar fila después de añadir una nueva fila
         $("#eliminar_fila").show();
     }
-    
+
+   // Función para manejar el envío del formulario
+function submitForm(event) {
+    event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+    var form = $(this);
+    // Mostrar mensaje de carga
+    $("#loadingMessage").show();
+    $.ajax({
+        type: form.attr('method'),
+        url: form.attr('action'),
+        data: form.serialize(),
+        dataType: 'json',
+        success: function(response) {
+            $("#loadingMessage").hide(); // Ocultar mensaje de carga
+            if (response.status === "success") {
+                toastr.success(response.message, 'Éxito'); // Mostrar mensaje de éxito
+                $(".toast-success").css("background-color", "green"); // Cambiar color
+            } else {
+                toastr.error(response.message, 'Error'); // Mostrar mensaje de error
+            }
+        },
+        error: function(xhr, status, error) {
+            $("#loadingMessage").hide(); // Ocultar mensaje de carga
+            console.error("Error: " + error); // Log en consola
+            console.error("Status: " + status);
+            console.error("Response: " + xhr.responseText);
+
+            toastr.error('Ocurrió un problema al procesar la solicitud. Intenta nuevamente.', 'Error'); // Mensaje genérico
+        }
+    });
+
+
+    }
 
     // Función para eliminar la fila seleccionada de la tabla de artículos
     function deleteRow() {

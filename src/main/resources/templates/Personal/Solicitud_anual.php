@@ -29,7 +29,7 @@ if ($resultado_documento && mysqli_num_rows($resultado_documento) > 0) {
     $documento_instructor = ""; // Establecer el documento en blanco si no se encuentra en la base de datos
 }
 
-Inactividad(700);
+//Inactividad(700);
 
 if (isset($_GET['cerrar_sesion'])) {
     cerrarSesion();
@@ -38,7 +38,6 @@ if (isset($_GET['cerrar_sesion'])) {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,12 +48,17 @@ if (isset($_GET['cerrar_sesion'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.2.2/dist/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.2.2/dist/select2-bootstrap4.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>SENA-Gestor de Materiales</title>
 </head>
-
 <header>
     <div class="container">
         <div class="row">
@@ -101,7 +105,7 @@ if (isset($_GET['cerrar_sesion'])) {
                 <h2 class="mt-2" id="titulo">Formulario solicitud de elementos anual</h2>
             </div>
         </div>
-            <form action="../Personal/PHP/RegistrarSolicitudAnual.php" method="post">
+            <form action="../Personal/PHP/RegistrarSolicitudAnual.php" method="post" id="informeForm">
                 <div class="row">
                     <div class="col-md-6">
                         <label>Fecha de Solicitud:</label>
@@ -183,17 +187,28 @@ if (isset($_GET['cerrar_sesion'])) {
                                 </tr>
                             </tbody>
                         </table>
-                        <button class="btn btn-success btn-lg mt-4 float-right" id="enviar_informe">Enviar Informe <i
+
+                        <button class="btn btn-success btn-lg mt-4  float-right" id="enviar_informe">Enviar Informe <i
                                 class="bi bi-send"></i></button>
                         <button class="btn btn-secondary mb-3" id="nuevo_articulo">Añadir Item <i
                                 class="bi bi-journal-plus"></i></button><br>
                         <button type="button" class="btn btn-danger mb-3" id="eliminar_fila">Eliminar Artículo <i
                                 class="bi bi-trash"></i></button><br>
+            <div id="loadingMessage" style="display:none;">Procesando, por favor espera...</div>
+                </form>
+            </div>
+                <form action="Subir/ReportesExcel.php" method="post" id="excelForm">
+                    <div class="row">
+                        <div class="col-md-9 mb-3">
                     </div>
+                
+                    <button type="submit" class="btn btn-primary btn-lg mt-2 float-right">Descargar Excel <i
+                        class="bi bi-file-earmark-spreadsheet"></i></button>   
+                </form>
                 </div>
-            </form>
+            </div>
         </div>
         <script src="../js/Solicitud_anual.js"></script>
+ 
 </body>
-
 </html>
