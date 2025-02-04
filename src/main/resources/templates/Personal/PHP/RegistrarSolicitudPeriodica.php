@@ -215,28 +215,81 @@ if ($stmt->execute()) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
+
         // Destinatarios
         $mail->setFrom('almacencenigraf@gmail.com', 'Almacen CENIGRAF');
-        $mail->addAddress($correo_coordinador, $nombre_coor);
+        $mail->addAddress('maickgutierrez13@gmail.com',$correo_coordinador, $nombre_coor);
 
+         // Adjuntar una imagen
+    $imagePath = 'C:\xampp\htdocs\InventarioPHP\src\main\resources\templates\images\cenigraf.png';
+    if (file_exists($imagePath)) {
+        $mail->addEmbeddedImage($imagePath, 'logo_cenigraf');
+    } else {
+        throw new Exception("No se pudo acceder al archivo: $imagePath");
+    }
         // Contenido del correo
         $mail->isHTML(true);
         $mail->Subject = 'Nueva Solicitud Periodica Enviada';
-        $mail->Body = "Se ha enviado una nueva solicitud periodica con la siguiente informacion:<br>
-                      <b>Fecha de Solicitud:</b> $fecha_solicitud<br>
-                      <b>Codigo Regional:</b> $cod_regional<br>
-                      <b>Codigo de Costos:</b> $cod_costos<br>
-                      <b>Nombre del Coordinador:</b> $nombre_coor<br>
-                      <b>Area de Solicitud:</b> $area_solicitud<br>
-                      <b>Nombre Regional:</b> $nom_regional<br>
-                      <b>Nombre Centro de Costos:</b> $nom_centro_costos<br>
-                      <b>Cargo:</b> $cargo<br>
-                      <b>Tipo de Cuentadante:</b> $id_tipo_cuentadante<br>
-                      <b>Destino de los Bienes:</b> $destino<br>
-                      <b>Codigo de grupo o numero de ficha:</b> $numero_ficha<br>
-                      <b>Ingrese desde el siguiente link:<br>
-                      <b>http://localhost/almacen2024-SOFIA/src/main/resources/templates<br>
-                      ";
+        $mail->Body = "
+        <html>
+        <head>
+            <style>
+                .container{
+                    font-family: Arial, sans-serif;
+                    margin: 20px;
+                    padding: 20px;
+                    border: 1px solid #ccc;
+                    border-radius: 10px;
+                    background-color: #f9f9f9;
+                }
+                .header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+                .header img {
+                    max-width: 150px;
+                }
+                .content {
+                    margin-bottom: 20px;
+                }
+                .footer {
+                    text-align: center;
+                    font-size: 12px;
+                    color: #777;
+                }
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+            <div class='header'>
+                <img src='cid:logo_cenigraf' alt='CENIGRAF'>
+                <h2>Solicitud Periodica Generada</h2>
+            </div>
+            <div class='content'>
+            <p>Se ha enviado una nueva solicitud periodica con la siguiente informacion:<br> </p>
+                      <p><b>Fecha de Solicitud:</b> $fecha_solicitud<br></p>
+                      <p><b>Codigo Regional:</b> $cod_regional<br></p>
+                      <p><b>Codigo de Costos:</b> $cod_costos<br></p>
+                      <p><b>Nombre del Coordinador:</b> $nombre_coor<br></p>
+                      <p><b>Area de Solicitud:</b> $area_solicitud<br></p>
+                      <p><b>Nombre Regional:</b> $nom_regional<br></p>
+                      <p><b>Nombre Centro de Costos:</b> $nom_centro_costos<br></p>
+                      <p><b>Cargo:</b> $cargo<br></p>
+                      <p><b>Tipo de Cuentadante:</b> $id_tipo_cuentadante<br></p>
+                      <p><b>Destino de los Bienes:</b> $destino<br></p>
+                      <p><b>Codigo de grupo o numero de ficha:</b> $numero_ficha<br></p>
+                      <p><b>Ingrese desde el siguiente link:<br></p>
+                      <p><b>http://localhost/InventarioPHP/src/main/resources/templates<br>
+            </div>
+            <div class='footer'>
+                <p>Este es un mensaje automático, por favor no responda a este correo.</p>
+                <p>&copy; 2024 CENIGRAF. Todos los derechos reservados.</p>
+            </div>
+        </div>
+        </body>
+        </html>
+ 
+        ";
 
         $mail->send();
         $_SESSION['correo_enviado'] = true;

@@ -10,11 +10,10 @@ if (!isset($_SESSION['id'])) {
 // Incluir el archivo de conexión a la base de datos
 include('../../PHP/Conexion.php');
 
-$usuario_id = $_SESSION['id'];
-
 // Incluir PhpSpreadsheet
 require '../../Composer/vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 // Ruta de la plantilla
 $plantilla = '../../Composer/vendor/Excel/solicitud_mantenimiento.xlsx';
@@ -67,7 +66,7 @@ $conexion->close();
 
 // Configurar los encabezados HTTP para la descarga del archivo Excel
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="solicitud de mantenimiento.xlsx"');
+header('Content-Disposition: attachment;filename="solicitud_de_mantenimiento.xlsx"');
 header('Cache-Control: max-age=0');
 
 // Guardar el archivo Excel en el flujo de salida (output)

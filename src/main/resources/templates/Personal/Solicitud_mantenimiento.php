@@ -1,13 +1,11 @@
 <?php
-
 include ('../PHP/Funciones.php');
 include ('../PHP/Conexion.php');
 
 InicioSesion();
-
 if (!isset($_SESSION['nombre_usuario'])) {
     if (isset($_SESSION['id'])) {
-        $consulta_nombre_usuario = "SELECT * FROM instructor WHERE id = {$_SESSION['id']}";
+        $consulta_nombre_usuario = "SELECT nombre_instructor FROM instructor WHERE id = {$_SESSION['id']}";
         $resultado_nombre_usuario = mysqli_query($conexion, $consulta_nombre_usuario);
 
         if ($resultado_nombre_usuario && mysqli_num_rows($resultado_nombre_usuario) > 0) {
@@ -21,7 +19,16 @@ if (!isset($_SESSION['nombre_usuario'])) {
     }
 }
 
-Inactividad(700);
+$consulta_documento = "SELECT cedula FROM instructor WHERE nombre_instructor = '{$_SESSION['nombre_instructor']}'";
+$resultado_documento = mysqli_query($conexion, $consulta_documento);
+
+if ($resultado_documento && mysqli_num_rows($resultado_documento) > 0) {
+    $fila_documento = mysqli_fetch_assoc($resultado_documento);
+    $documento_instructor = $fila_documento['cedula']; // Cambié 'documento' a 'cedula' aquí
+} else {
+    $documento_instructor = ""; // Establecer el documento en blanco si no se encuentra en la base de datos
+}
+//Inactividad(700);
 
 if (isset($_GET['cerrar_sesion'])) {
     cerrarSesion();
@@ -34,6 +41,18 @@ if (isset($_GET['cerrar_sesion'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" &amp;gt;>
+ 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+ 
+ 
+ 
+    <!-- SweetAlert2 -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="../CSS/style_solicitudes.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="../CSS/style_solicitudes.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!--Icons-->
@@ -47,6 +66,8 @@ if (isset($_GET['cerrar_sesion'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <!--JQuery y js-->
     <script src="../js/jquery-3.6.1.min.js" type="text/javascript"></script>
+    <!-- Incluir el archivo JavaScript -->
+    <script src="../js/Solicitud_Mantenimiento.js"></script>
     <title>SENA-Gestor de Materiales</title>
 </head>
 <header>
@@ -84,26 +105,22 @@ if (isset($_GET['cerrar_sesion'])) {
         </div>
     </div>
 </header>
-
 <body>
     <div class="container my-5 py-4 px-5" id="formulario">
         <div class="row">
             <div class="col-12 my-5" id="Principal">
-
                 <a href="PrincipalPersonalCENIGRAF.php">
                     <img src="../images/Logo-de-SENA-png-verde.png" style="float: right;" width="70px" title="Volver">
                 </a>
-
-
-
                 <h2 class="mt-2" id="titulo">Solicitud de mantenimiento - Personal CENIGRAF </h2>
             </div>
         </div>
-        <form action="PHP/RegistrarSolicitudMantenimiento.php" method="post">
+         <!-- Mensaje de carga -->
+         <div id="loadingMessage" style="display: none;">Cargando...</div>
+        <form action="../Personal/PHP/RegistrarSolicitudMantenimiento.php" method="post" id="EnvioFormulario">
             <div class="row">
                 <div class="form-group col-12">
                     <h3>Seleccione el tipo de mantenimiento</h3>
-
                     <?php
                     // Consulta para obtener los tipos de mantenimiento disponibles
                     $consulta_mantenimiento = "SELECT id, nombre FROM tipo_mantenimiento";
@@ -319,7 +336,7 @@ if (isset($_GET['cerrar_sesion'])) {
                                             style="text-transform: uppercase;" readonly>
 
                                         <label>Ambiente:</label>
-                                        <select class="form-control" id="ambiente" name="ambiente" required>
+                                        <select class="form-control" id="id_ambiente" name="id_ambiente" required>
                                             <option value="">Seleccionar Ambiente</option>
                                             <?php
                                             $consulta_ambientes = "SELECT id_ambiente, nombre_ambiente FROM ambiente";
@@ -352,22 +369,30 @@ if (isset($_GET['cerrar_sesion'])) {
                                         <input type="text" class="form-control" id="nombre_rol_solicitante"
                                             name="nombre_rol_solicitante" value="<?php echo $nombre_rol; ?>" required
                                             style="text-transform: uppercase;" readonly>
-
-
-
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                    <div class="col-12">
+                    <button type="submit" class="btn btn-success btn-lg mt-4 float-right" id="envioMante">Enviar Informe <i class="bi bi-send"></i></button>
+                    <div id="loadingMessage" style="display:none;">Procesando, por favor espera...</div>
                 </div>
-                <div class="col-12">
-                    <button class="btn btn-success btn-lg mt-4 float-right" id="enviar">Enviar Informe <i
-                            class="bi bi-send"></i></button>
-                </div>
-            </div>
         </form>
+        <form action="Subir/ReportesExcel.php" method="post" id="excelForm">
+    <div class="row">
+        <div class="col-md-1 mb-3">
+            <!-- Incluye los campos del formulario principal -->
+            <input type="hidden" name="f_solicitud" value="<?php echo isset($_POST['f_solicitud']) ? $_POST['f_solicitud'] : ''; ?>">
+            <input type="hidden" name="nombre_solicitante" value="<?php echo isset($_POST['nombre_solicitante']) ? $_POST['nombre_solicitante'] : ''; ?>">
+            <input type="hidden" name="docu" value="<?php echo isset($_POST['docu']) ? $_POST['docu'] : ''; ?>">
+            <input type="hidden" name="fi_anu" value="<?php echo isset($_POST['fi_anu']) ? $_POST['fi_anu'] : ''; ?>">
+            <input type="hidden" name="pro_anu" value="<?php echo isset($_POST['pro_anu']) ? $_POST['pro_anu'] : ''; ?>">
+            <!-- Añade otros campos necesarios -->
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg mt-2 float-right">Descargar Excel <i class="bi bi-file-earmark-spreadsheet"></i></button>
+</form>
     </div>
 </body>
-
 </html>

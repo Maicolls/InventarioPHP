@@ -1,8 +1,7 @@
 <?php
-// Iniciar sesión
-include ('../../PHP/Funciones.php');
 
-InicioSesion();
+// Iniciar sesión
+session_start();
 
 // Verificar si la sesión contiene el identificador del usuario
 if (!isset($_SESSION['id'])) {
@@ -17,15 +16,41 @@ $usuario_id = $_SESSION['id'];
 // Incluir PhpSpreadsheet
 require '../../Composer/vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-// Ruta de la plantilla
+// Ruta de la plantilla para solicitud periódica
 $plantilla = '../../Composer/vendor/Excel/plantilla_solicitud.xlsx';
+
+// Verificar si la plantilla existe
+if (!file_exists($plantilla)) {
+    die("La plantilla no se encuentra en la ruta especificada.");
+}
 
 // Crear un objeto PhpSpreadsheet a partir de la plantilla
 $spreadsheet = IOFactory::load($plantilla);
 
 // Obtener la hoja activa
 $sheet = $spreadsheet->getActiveSheet();
+
+// Obtener los datos del formulario
+$fecha_solicitud = $_POST['f_solicitud'];
+$nombre_solicitante = $_POST['nombre_solicitante'];
+$documento = $_POST['docu'];
+$ficha = $_POST['fi_anu'];
+$programa = $_POST['pro_anu'];
+
+
+// Rellenar la hoja con los datos del formulario
+$sheet->setCellValue('A1', 'Fecha de Solicitud');
+$sheet->setCellValue('B1', $fecha_solicitud);
+$sheet->setCellValue('A2', 'Nombre del Solicitante');
+$sheet->setCellValue('B2', $nombre_solicitante);
+$sheet->setCellValue('A3', 'Documento');
+$sheet->setCellValue('B3', $documento);
+$sheet->setCellValue('A4', 'Ficha');
+$sheet->setCellValue('B4', $ficha);
+$sheet->setCellValue('A5', 'Programa');
+$sheet->setCellValue('B5', $programa);
 
 // Consultar los datos de la base de datos
 $sql = "SELECT sp.*, a.nombre_ambiente AS nombre_ambiente,
@@ -38,7 +63,7 @@ $sql = "SELECT sp.*, a.nombre_ambiente AS nombre_ambiente,
 $result = $conexion->query($sql);
 
 if ($result->num_rows > 0) {
-    // Si hay datos, recorrer el resultado y asignarlos a las celdas
+   //  Si hay datos, recorrer el resultado y asignarlos a las celdas
     $row = $result->fetch_assoc();
     $sheet->setCellValue('C5', $row['fecha_soli']); // Fecha de Solicitud
     $sheet->setCellValue('H5', strtoupper($row['nombre_ambiente'])); // Area
@@ -52,7 +77,6 @@ if ($result->num_rows > 0) {
     $sheet->setCellValue('F18', strtoupper($row['num_fich'])); // Ficha de caracterizacion
     $sheet->setCellValue('C37', strtoupper($row['nom_jefe'])); // Nombre del coordinador
     $sheet->setCellValue('H37', strtoupper($row['cargo'])); // Cargo
-
 }
 $result->free();
 
@@ -69,7 +93,6 @@ if ($result_last_solicitud->num_rows > 0) {
 }
 
 // Consulta para obtener los datos del cuentadante según el id de la solicitud
-
 $sql_cuentadante = "
     SELECT c.nombre, c.documento 
     FROM cuentadante c
@@ -110,8 +133,6 @@ if ($result_cuentadante->num_rows > 0) {
 $stmt->close();
 $result_cuentadante->free();
 
-
-
 // Consulta para obtener los datos del elemento según el id de la solicitud
 $sql_elemento = "
     SELECT e.codigo, e.nombre, e.und_medida, e.cantidad_solicitada, 
@@ -149,9 +170,8 @@ $conexion->close();
 
 // Configurar los encabezados HTTP para la descarga del archivo Excel
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="Solicitud.xlsx"');
+header('Content-Disposition: attachment; filename="solicitud_periodica.xlsx"');
 header('Cache-Control: max-age=0');
-
 
 // Guardar el archivo Excel en el flujo de salida (output)
 $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');

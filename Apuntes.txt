@@ -1,5 +1,13 @@
 la ruta para poder iniciar en un servidor local debe ser la siguiente 
-http://localhost/almacen2024-SOFIA/src/main/resources/templates/index.PHP
+http://localhost/InventarioPHP/src/main/resources/templates/index.php
+____________________________________________________________________________
+Para encriptar las contraseñas se debe generar un archivo hash para que estas sean almacenadas 
+se implementa principalmente ya que el usuario que se entrego junto al proyecto no estaba sirviendo 
+el rol de adminitrador 
+
+
+
+
 ____________________________________________________________________________
 
 Arreglos que se deben realizar en el codigo 
@@ -40,4 +48,22 @@ descarga de un archivo excel
 
 Se debe mirar las consultas sql que hay dentro del codigo, ya que hya unas que no sirven como la table de usuario.
 se debe realizar el diagrama  de flujo para el diseño de la interfaz faltante para las vistas de personal. 
-mirar si se intervine la base de datos 
+mirar si se intervine la base de datos
+
+___________________________________________________
+
+Mirar la descarga de excel y en general los archivos para poder realizar la descarga correcta de los excel
+
+
+____________________________________________________________________________
+Semana 24 enero a 28 de enero 
+Cambios e Implementaciones
+Incluir Toastr en el proyecto:
+
+Añadimos los enlaces a Toastr en la sección <head> de tu archivo HTML para incluir los estilos y scripts necesarios.
+Modificar el código PHP para devolver una respuesta JSON:
+
+Actualizamos el código PHP para que devuelva una respuesta JSON en lugar de generar directamente el código JavaScript. Esto permite manejar las respuestas en el lado del cliente con JavaScript.
+Manejar la respuesta en el cliente con JavaScript:
+
+Añadimos un script JavaScript que captura el evento de envío del formulario, envía los datos al servidor usando AJAX, y maneja la respuesta para mostrar las alertas con Toastr.

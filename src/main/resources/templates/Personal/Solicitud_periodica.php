@@ -29,7 +29,7 @@ if ($resultado_documento && mysqli_num_rows($resultado_documento) > 0) {
     $documento_instructor = ""; // Establecer el documento en blanco si no se encuentra en la base de datos
 }
 
-Inactividad(700);
+//Inactividad(700);
 
 if (isset($_GET['cerrar_sesion'])) {
     cerrarSesion();
@@ -315,21 +315,23 @@ if (isset($_GET['cerrar_sesion'])) {
                             class="bi bi-send"></i></button>
 
         </form>
-        <form action="Subir/ReportesExcel.php" method="post" id="excelForm">
-        <div class="row">
+<form action="Subir/ReportesExcel.php" method="post" id="excelForm">
+    <div class="row">
         <div class="col-md-6 mb-3">
+            <!-- Incluye los campos del formulario principal -->
+            <input type="hidden" name="f_solicitud" value="<?php echo isset($_POST['f_solicitud']) ? $_POST['f_solicitud'] : ''; ?>">
+            <input type="hidden" name="nombre_solicitante" value="<?php echo isset($_POST['nombre_solicitante']) ? $_POST['nombre_solicitante'] : ''; ?>">
+            <input type="hidden" name="docu" value="<?php echo isset($_POST['docu']) ? $_POST['docu'] : ''; ?>">
+            <input type="hidden" name="fi_anu" value="<?php echo isset($_POST['fi_anu']) ? $_POST['fi_anu'] : ''; ?>">
+            <input type="hidden" name="pro_anu" value="<?php echo isset($_POST['pro_anu']) ? $_POST['pro_anu'] : ''; ?>">
+            <!-- Añade otros campos necesarios -->
         </div>
-        </div>
-            <button type="submit" class="btn btn-primary btn-lg mt-2 float-right">Descargar Excel <i
-                    class="bi bi-file-earmark-spreadsheet"></i></button>
-                    
-        </form>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg mt-2 float-right">Descargar Excel <i class="bi bi-file-earmark-spreadsheet"></i></button>
+</form>
     </div>
     </div>
-    </div>
-
-    </div>
-    </div>
+    
     <script src="../js/Solicitud_periodica1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>

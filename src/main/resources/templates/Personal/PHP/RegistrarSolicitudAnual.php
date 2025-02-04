@@ -83,7 +83,7 @@ try {
     $mail->addAddress('maickgutierrez13@gmail.com', 'Nombre del Destinatario');
 
    // Adjuntar una imagen
-    $imagePath = 'C:/xampp/htdocs/Almacen2024-sofia/src/main/resources/templates/images/logo_cenigraf.png';
+    $imagePath = 'C:\xampp\htdocs\InventarioPHP\src\main\resources\templates\images\cenigraf.png';
     if (file_exists($imagePath)) {
         $mail->addEmbeddedImage($imagePath, 'logo_cenigraf');
     } else {
