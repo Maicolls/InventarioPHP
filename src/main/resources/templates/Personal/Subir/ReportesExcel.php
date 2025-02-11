@@ -8,6 +8,11 @@ if (!isset($_SESSION['id'])) {
     die("No se ha iniciado sesión.");
 }
 
+// Verificar el parámetro 'vista'
+if (!isset($_POST['vista']) || $_POST['vista'] !== 'solicitud_periodica') {
+    die("Acceso no autorizado.");
+}
+
 // Incluir el archivo de conexión a la base de datos
 include ('../../PHP/Conexion.php');
 

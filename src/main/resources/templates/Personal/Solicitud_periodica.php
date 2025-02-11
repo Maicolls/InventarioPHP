@@ -315,7 +315,7 @@ if (isset($_GET['cerrar_sesion'])) {
                             class="bi bi-send"></i></button>
 
         </form>
-<form action="Subir/ReportesExcel.php" method="post" id="excelForm">
+        <form action="Subir/ReportesExcel.php" method="post" id="excelForm">
     <div class="row">
         <div class="col-md-6 mb-3">
             <!-- Incluye los campos del formulario principal -->
@@ -325,6 +325,7 @@ if (isset($_GET['cerrar_sesion'])) {
             <input type="hidden" name="fi_anu" value="<?php echo isset($_POST['fi_anu']) ? $_POST['fi_anu'] : ''; ?>">
             <input type="hidden" name="pro_anu" value="<?php echo isset($_POST['pro_anu']) ? $_POST['pro_anu'] : ''; ?>">
             <!-- Añade otros campos necesarios -->
+            <input type="hidden" name="vista" value="solicitud_periodica">
         </div>
     </div>
     <button type="submit" class="btn btn-primary btn-lg mt-2 float-right">Descargar Excel <i class="bi bi-file-earmark-spreadsheet"></i></button>
