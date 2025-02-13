@@ -48,6 +48,7 @@ if (isset($_GET['cerrar_sesion'])) {
  
  
  
+
     <!-- SweetAlert2 -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../CSS/style_solicitudes.css">
