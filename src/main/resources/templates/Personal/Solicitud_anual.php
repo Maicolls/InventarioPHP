@@ -197,14 +197,19 @@ if (isset($_GET['cerrar_sesion'])) {
             <div id="loadingMessage" style="display:none;">Procesando, por favor espera...</div>
                 </form>
             </div>
-                <form action="Subir/ReportesExcel.php" method="post" id="excelForm">
-                    <div class="row">
-                        <div class="col-md-9 mb-3">
-                    </div>
-                
-                    <button type="submit" class="btn btn-primary btn-lg mt-2 float-right">Descargar Excel <i
-                        class="bi bi-file-earmark-spreadsheet"></i></button>   
-                </form>
+            <form action="Subir/ReporteAnualE.php" method="post" id="excelForm">
+    <div class="row">
+        <div class="col-md-9 mb-3">
+            <input type="hidden" name="f_solicitud" value="<?php echo date('Y-m-d'); ?>">
+            <input type="hidden" name="nombre_solicitante" value="<?php echo $_SESSION['nombre_instructor']; ?>">
+            <input type="hidden" name="docu" value="<?php echo $documento_instructor; ?>">
+            <input type="hidden" name="fi_anu" value="<?php echo isset($_POST['fi_anu']) ? $_POST['fi_anu'] : ''; ?>">
+            <input type="hidden" name="pro_anu" value="<?php echo isset($_POST['pro_anu']) ? $_POST['pro_anu'] : ''; ?>">
+            <input type="hidden" name="vista" value="solicitud_anual">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg mt-2 float-right">Descargar Excel <i class="bi bi-file-earmark-spreadsheet"></i></button>
+</form>
                 </div>
             </div>
         </div>

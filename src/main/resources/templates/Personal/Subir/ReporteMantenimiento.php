@@ -7,6 +7,11 @@ if (!isset($_SESSION['id'])) {
     die("No se ha iniciado sesión.");
 }
 
+// Verificar el parámetro 'vista'
+if (!isset($_POST['vista']) || $_POST['vista'] !== 'solicitud_mantenimiento') {
+    die("Acceso no autorizado.");
+}
+
 // Incluir el archivo de conexión a la base de datos
 include('../../PHP/Conexion.php');
 
@@ -17,6 +22,11 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 // Ruta de la plantilla
 $plantilla = '../../Composer/vendor/Excel/solicitud_mantenimiento.xlsx';
+
+// Verificar si la plantilla existe
+if (!file_exists($plantilla)) {
+    die("La plantilla no se encuentra en la ruta especificada.");
+}
 
 // Crear un objeto PhpSpreadsheet a partir de la plantilla
 $spreadsheet = IOFactory::load($plantilla);
@@ -46,7 +56,7 @@ if ($result->num_rows > 0) {
     $sheet->setCellValue('C8', strtoupper($row['solicitante'])); // Solicitante
     $sheet->setCellValue('I8', strtoupper($row['cedula'])); // documento
     $sheet->setCellValue('H16', strtoupper($row['cargo'])); // Cargo
-    $sheet->setCellValue('c16', strtoupper($row['solicitante'])); // Solicitante
+    $sheet->setCellValue('C16', strtoupper($row['solicitante'])); // Solicitante
     // Ahora, asigna los valores de la máquina
     $sheet->setCellValue('B14', strtoupper($row['nombre_maquina'])); // Nombre de la máquina
     $sheet->setCellValue('C14', strtoupper($row['marca'])); // Marca de la máquina

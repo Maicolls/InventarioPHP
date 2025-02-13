@@ -379,10 +379,11 @@ if (isset($_GET['cerrar_sesion'])) {
                     <div id="loadingMessage" style="display:none;">Procesando, por favor espera...</div>
                 </div>
         </form>
-        <form action="Subir/ReportesExcel.php" method="post" id="excelForm">
+        <form action="Subir/ReporteMantenimiento.php" method="post" id="excelForm">
     <div class="row">
         <div class="col-md-1 mb-3">
             <!-- Incluye los campos del formulario principal -->
+            <input type="hidden" name="vista" value="solicitud_mantenimiento">
             <input type="hidden" name="f_solicitud" value="<?php echo isset($_POST['f_solicitud']) ? $_POST['f_solicitud'] : ''; ?>">
             <input type="hidden" name="nombre_solicitante" value="<?php echo isset($_POST['nombre_solicitante']) ? $_POST['nombre_solicitante'] : ''; ?>">
             <input type="hidden" name="docu" value="<?php echo isset($_POST['docu']) ? $_POST['docu'] : ''; ?>">
