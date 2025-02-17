@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("loadingMessage").style.display = "block";
 
                 // Enviar los datos usando fetch
-                fetch("http://localhost/InventarioPHP/PHP/ReporteMantenimiento.php", {
+                fetch("../Personal/PHP/RegistrarSolicitudMantenimiento.php", {
                     method: "POST",
                     body: formData
                 })
