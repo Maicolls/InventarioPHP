@@ -62,7 +62,8 @@ if (isset($_SESSION['error_inactividad'])) {
         }
     });
     </script>
-
+   <!-- Favicon -->
+ <link rel="icon" type="image/x-icon" href="../images/logo-de-Sena-sin-fondo-Blanco.png">
     <title>SENA-Gestor de Materiales</title>
 </head>
 <body>

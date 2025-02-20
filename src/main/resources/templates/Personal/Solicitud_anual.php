@@ -55,6 +55,8 @@ if (isset($_GET['cerrar_sesion'])) {
     <!-- SweetAlert2 CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="../images/logo-de-Sena-sin-fondo-Blanco.png">
 <!-- SweetAlert2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>SENA-Gestor de Materiales</title>
@@ -81,7 +83,7 @@ if (isset($_GET['cerrar_sesion'])) {
                                         Perfil <i class="bi bi-person-circle"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item">Personal</a>
+                                    <a class="dropdown-item" href="../Personal/PrincipalPersonalCENIGRAF.php">Personal CENIGRAF</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="?cerrar_sesion=1">Cerrar Sesion</a>
                                     </div>

@@ -45,6 +45,8 @@ if (isset($_GET['cerrar_sesion'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <!--JQuery y js-->
     <script src="../js/jquery-3.6.1.min.js" type="text/javascript"></script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../images/logo-de-Sena-sin-fondo-Blanco.png">
     <title>SENA-Gestor de Materiales</title>
 </head>
     <!--Barra de navegación-->

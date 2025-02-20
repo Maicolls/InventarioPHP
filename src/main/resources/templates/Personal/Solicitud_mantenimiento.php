@@ -69,6 +69,8 @@ if (isset($_GET['cerrar_sesion'])) {
     <script src="../js/jquery-3.6.1.min.js" type="text/javascript"></script>
     <!-- Incluir el archivo JavaScript -->
     <script src="../js/Solicitud_Mantenimiento.js"></script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../images/logo-de-Sena-sin-fondo-Blanco.png">
     <title>SENA-Gestor de Materiales</title>
 </head>
 <header>
@@ -93,7 +95,7 @@ if (isset($_GET['cerrar_sesion'])) {
                                         Perfil <i class="bi bi-person-circle"></i></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item">Personal CENIGRAF</a>
+                                        <a class="dropdown-item" href="../Personal/PrincipalPersonalCENIGRAF.php">Personal CENIGRAF</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="?cerrar_sesion=1">Cerrar Sesion</a>
                                     </div>
