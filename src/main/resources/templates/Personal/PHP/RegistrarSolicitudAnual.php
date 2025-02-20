@@ -6,11 +6,9 @@ InicioSesion();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-
 require '../../Composer/vendor/phpmailer/phpmailer/src/Exception.php';
 require '../../Composer/vendor/phpmailer/phpmailer/src/PHPMailer.php';
 require '../../Composer/vendor/phpmailer/phpmailer/src/SMTP.php';
-
 
 // Verificar la conexión
 if ($conexion->connect_error) {
@@ -33,6 +31,13 @@ if (isset($_POST['f_solicitud'])) {
     $unidades = $_POST['unidad'];
     $cantidades = $_POST['cantidad'];
     $solicitadas = $_POST['solicitada'];
+
+    // Depuración: Imprimir los valores recibidos
+    echo "Fecha de Solicitud: $fecha_solicitud<br>";
+    echo "Nombre del Solicitante: $nombre<br>";
+    echo "Documento: $documento<br>";
+    echo "Ficha: $ficha<br>";
+    echo "Programa: $programa<br>";
 
     // Procesar cada elemento individualmente
     for ($i = 0; $i < count($elementos); $i++) {
@@ -63,120 +68,116 @@ if (isset($_POST['f_solicitud'])) {
     // Medir el tiempo después de la inserción
     $insert_time = microtime(true);
 
-// Obtener la hora actual
-$hora_envio = date('H:i:s');
+    // Obtener la hora actual
+    $hora_envio = date('H:i:s');
 
-// Enviar el correo electrónico usando PHPMailer
-$mail = new PHPMailer(true);
-try {
-    // Configuración del servidor SMTP
-    $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'almacencenigraf@gmail.com';
-    $mail->Password = 'xyivyvgjkzqueaeg';
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
+    // Enviar el correo electrónico usando PHPMailer
+    $mail = new PHPMailer(true);
+    try {
+        // Configuración del servidor SMTP
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'almacencenigraf@gmail.com';
+        $mail->Password = 'xyivyvgjkzqueaeg';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
 
-    // Destinatarios
-    $mail->setFrom('almacencenigraf@gmail.com', 'Almacen CENIGRAF');
-    $mail->addAddress('maickgutierrez13@gmail.com', 'Nombre del Destinatario');
+        // Destinatarios
+        $mail->setFrom('almacencenigraf@gmail.com', 'Almacen CENIGRAF');
+        $mail->addAddress('maickgutierrez13@gmail.com', 'Nombre del Destinatario');
 
-   // Adjuntar una imagen
-    $imagePath = 'C:\xampp\htdocs\InventarioPHP\src\main\resources\templates\images\cenigraf.png';
-    if (file_exists($imagePath)) {
-        $mail->addEmbeddedImage($imagePath, 'logo_cenigraf');
-    } else {
-        throw new Exception("No se pudo acceder al archivo: $imagePath");
+        // Adjuntar una imagen
+        $imagePath = 'C:\xampp\htdocs\InventarioPHP\src\main\resources\templates\images\cenigraf.png';
+        if (file_exists($imagePath)) {
+            $mail->addEmbeddedImage($imagePath, 'logo_cenigraf');
+        } else {
+            throw new Exception("No se pudo acceder al archivo: $imagePath");
+        }
+
+        // Contenido del correo
+        $mail->isHTML(true); // Configurar el correo en formato HTML
+        $mail->Subject = 'Se ha generado Nueva Solicitud Anual'; // Asunto del correo
+
+        // Cuerpo del correo
+        $mail->Body = "
+        <html>
+        <head>
+            <style>
+                .container {
+                    font-family: Arial, sans-serif;
+                    margin: 20px;
+                    padding: 20px;
+                    border: 1px solid #ccc;
+                    border-radius: 10px;
+                    background-color: #f9f9f9;
+                }
+                .header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+                .header img {
+                    max-width: 150px;
+                }
+                .content {
+                    margin-bottom: 20px;
+                }
+                .footer {
+                    text-align: center;
+                    font-size: 12px;
+                    color: #777;
+                }
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <div class='header'>
+                    <img src='cid:logo_cenigraf' alt='CENIGRAF'>
+                    <h2>Solicitud Anual Generada</h2>
+                </div>
+                <div class='content'>
+                    <p>Buen dia, Se ha recibido una nueva solicitud anual con los siguientes detalles:</p>
+                    <p><strong>Fecha de Solicitud:</strong> $fecha_solicitud</p>
+                    <p><strong>Hora de Envío:</strong> $hora_envio</p>
+                    <p><strong>Nombre del Solicitante:</strong> $nombre</p>
+                    <p><strong>Documento:</strong> $documento</p>
+                    <p><strong>Ficha:</strong> $ficha</p>
+                    <p><strong>Programa:</strong> $programa</p>
+                </div>
+                <div class='footer'>
+                    <p>Este es un mensaje automático, por favor no responda a este correo.</p>
+                    <p>&copy; 2024 CENIGRAF. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        ";
+        $mail->send(); // Envío del correo
+        $response = 'Correo enviado correctamente'; // Mensaje de éxito
+        $status = 'success'; // Estado de éxito
+    } catch (Exception $e) {  // Manejo de excepciones
+        $response = "Error al enviar el correo: {$mail->ErrorInfo}"; // Mensaje de error
+        $status = 'error';
     }
 
+    // Medir el tiempo después del envío del correo
+    $end_time = microtime(true);
 
-    // Contenido del correo
-    $mail->isHTML(true); // Configurar el correo en formato HTML
-    $mail->Subject = 'Se ha generado Nueva Solicitud Anual'; // Asunto del correo
+    // Calcular y mostrar los tiempos
+    $insert_duration = $insert_time - $start_time;
+    $mail_duration = $end_time - $insert_time;
+    $total_duration = $end_time - $start_time;
 
-    // Cuerpo del correo
-    $mail->Body = "
-    <html>
-    <head>
-        <style>
-            .container {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-                padding: 20px;
-                border: 1px solid #ccc;
-                border-radius: 10px;
-                background-color: #f9f9f9;
-            }
-            .header {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            .header img {
-                max-width: 150px;
-            }
-            .content {
-                margin-bottom: 20px;
-            }
-            .footer {
-                text-align: center;
-                font-size: 12px;
-                color: #777;
-            }
-        </style>
-    </head>
-    <body>
-        <div class='container'>
-            <div class='header'>
-                <img src='cid:logo_cenigraf' alt='CENIGRAF'>
-                <h2>Solicitud Anual Generada</h2>
-            </div>
-            <div class='content'>
-                <p>Buen dia, Se ha recibido una nueva solicitud anual con los siguientes detalles:</p>
-                <p><strong>Fecha de Solicitud:</strong> $fecha_solicitud</p>
-                <p><strong>Hora de Envío:</strong> $hora_envio</p>
-                <p><strong>Nombre del Solicitante:</strong> $nombre</p>
-                <p><strong>Documento:</strong> $documento</p>
-                <p><strong>Ficha:</strong> $ficha</p>
-                <p><strong>Programa:</strong> $programa</p>
-            </div>
-            <div class='footer'>
-                <p>Este es un mensaje automático, por favor no responda a este correo.</p>
-                <p>&copy; 2024 CENIGRAF. Todos los derechos reservados.</p>
-            </div>
-        </div>
-    </body>
-    </html>
-    ";
-    $mail->send(); // Envío del correo
-    $response = 'Correo enviado correctamente'; // Mensaje de éxito
-    $status = 'success'; // Estado de éxito
-} catch (Exception $e) {  // Manejo de excepciones
-    $response = "Error al enviar el correo: {$mail->ErrorInfo}"; // Mensaje de error
-    $status = 'error';
-}
+    $response .= "<br>Tiempo de inserción: " . $insert_duration . " segundos<br>";
+    $response .= "Tiempo de envío de correo: " . $mail_duration . " segundos<br>";
+    $response .= "Tiempo total: " . $total_duration . " segundos<br>";
 
-// Medir el tiempo después del envío del correo
-$end_time = microtime(true);
+    // Cerrar la conexión
+    $conexion->close();
 
-// Calcular y mostrar los tiempos
-$insert_duration = $insert_time - $start_time;
-$mail_duration = $end_time - $insert_time;
-$total_duration = $end_time - $start_time;
-
-$response .= "<br>Tiempo de inserción: " . $insert_duration . " segundos<br>";
-$response .= "Tiempo de envío de correo: " . $mail_duration . " segundos<br>";
-$response .= "Tiempo total: " . $total_duration . " segundos<br>";
-
-// Cerrar la conexión
-$conexion->close();
-
-// Enviar la respuesta al cliente en formato JSON
-header('Content-Type: application/json');
-echo json_encode(["status" => $status, "message" => $response]);
-exit();
+    // Enviar la respuesta al cliente en formato JSON
+    header('Content-Type: application/json');
+    echo json_encode(["status" => $status, "message" => $response]);
+    exit();
 }
 ?>
-// Cerrar la consulta para la solicitud y la conexión
-        $stmt->close();
-        $conexion->close();

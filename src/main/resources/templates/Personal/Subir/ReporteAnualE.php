@@ -65,8 +65,11 @@ $sheet->setCellValue('A5', 'Programa');
 $sheet->setCellValue('B5', $programa);
 
 // Consultar los datos de la base de datos
-$sql = "SELECT * FROM solicitud_anual ORDER BY id_anual DESC LIMIT 1";
-$result = $conexion->query($sql);
+$sql = "SELECT * FROM solicitud_anual WHERE fecha_soli = ? AND nombre_solici = ? AND documento = ? AND ficha_soli = ? AND programa_soli = ?";
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("ssisi", $fecha_solicitud, $nombre_solicitante, $documento, $ficha, $programa);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     // Si hay datos, recorrer el resultado y asignarlos a las celdas
